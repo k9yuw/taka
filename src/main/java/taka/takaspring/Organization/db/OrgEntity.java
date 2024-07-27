@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
 import taka.takaspring.Member.db.UserEntity;
 import taka.takaspring.Membership.db.MembershipEntity;
