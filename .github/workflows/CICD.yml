@@ -71,20 +71,21 @@ jobs:
           username: ubuntu
           host: ${{ secrets.TAKA_SERVER_IP }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          envs:
-            MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-            MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
-            MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-            JWT_SECRET: ${{ secrets.JWT_SECRET }}
-            MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
-            MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
-            TAKASERVER_IP: ${{ secrets.TAKA_SERVER_IP }}
+          script_stop: true
           script: |
             sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/taka_server:latest
             sudo docker stop ${{ env.TARGET_UPSTREAM }}
             sudo docker rm ${{ env.TARGET_UPSTREAM }}
             sudo docker run -d --name ${{ env.TARGET_UPSTREAM }} --env-file <(printenv) -p ${{ env.CURRENT_PORT }}:8080 -e PROFILES=${{ env.TARGET_UPSTREAM }} ${{ secrets.DOCKERHUB_USERNAME }}/taka_server:latest
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_USERNAME: ${{ secrets.MYSQL_USERNAME }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          TAKASERVER_IP: ${{ secrets.TAKA_SERVER_IP }}
 
       - name: Check deploy server URL
         uses: jtalk/url-health-check-action@v3
