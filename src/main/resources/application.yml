@@ -5,7 +5,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/taka?serverTimezone=Asia/Seoul
-    username: ${MYSQL_USER}
+    username: root
     password: ${MYSQL_PASSWORD}
 
   mail:
