@@ -73,16 +73,16 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
-            echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
+            sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/taka_server:latest
+            echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" > .env
             echo "MYSQL_USERNAME=${{ secrets.MYSQL_USERNAME }}" >> .env
             echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
             echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
             echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env
             echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
             echo "TAKA_SERVER_IP=${{ secrets.TAKA_SERVER_IP }}" >> .env
-
-            sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/taka_server:latest
+            chmod 600 .env
             if sudo docker ps -a --format '{{.Names}}' | grep -Eq "^${{ env.TARGET_UPSTREAM }}\$"; then
               sudo docker stop ${{ env.TARGET_UPSTREAM }}
               sudo docker rm ${{ env.TARGET_UPSTREAM }}
