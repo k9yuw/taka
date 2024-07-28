@@ -75,8 +75,10 @@ jobs:
           script: |
             sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/taka_server:latest
-            sudo docker stop ${{ env.TARGET_UPSTREAM }}
-            sudo docker rm ${{ env.TARGET_UPSTREAM }}
+            if sudo docker ps -a --format '{{.Names}}' | grep -Eq "^${{ env.TARGET_UPSTREAM }}\$"; then
+              sudo docker stop ${{ env.TARGET_UPSTREAM }}
+              sudo docker rm ${{ env.TARGET_UPSTREAM }}
+            fi
             sudo docker run -d --name ${{ env.TARGET_UPSTREAM }} -p ${{ env.CURRENT_PORT }}:8080 \
               -e PROFILES=${{ env.TARGET_UPSTREAM }} \
               -e MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} \
@@ -113,5 +115,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script_stop: true
           script: |
-            sudo docker stop ${{ env.CURRENT_UPSTREAM }}
-            sudo docker rm ${{ env.CURRENT_UPSTREAM }}
+            if sudo docker ps -a --format '{{.Names}}' | grep -Eq "^${{ env.CURRENT_UPSTREAM }}\$"; then
+              sudo docker stop ${{ env.CURRENT_UPSTREAM }}
+              sudo docker rm ${{ env.CURRENT_UPSTREAM }}
+            fi
