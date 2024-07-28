@@ -2,6 +2,7 @@ package taka.takaspring.Membership.db;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
 import taka.takaspring.Member.db.UserEntity;
 import taka.takaspring.Organization.db.OrgEntity;
 import taka.takaspring.common.BaseEntity;

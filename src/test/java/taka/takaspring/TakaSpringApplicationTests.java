@@ -8,6 +8,7 @@ class TakaSpringApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }

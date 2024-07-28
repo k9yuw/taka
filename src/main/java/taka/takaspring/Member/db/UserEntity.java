@@ -2,6 +2,7 @@ package taka.takaspring.Member.db;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
 import taka.takaspring.Member.db.enums.RoleType;
 import taka.takaspring.Membership.db.MembershipEntity;
@@ -18,6 +19,7 @@ import static org.hibernate.envers.RelationTargetAuditMode.NOT_AUDITED;
 @Entity
 @Table(name = "user_entity")
 @Audited(targetAuditMode = NOT_AUDITED)
+//@SQLDelete(sql = "UPDATE user_entity SET user_entity.deleted_date = CURRENT_TIMESTAMP WHERE user_id = ?")
 public class UserEntity extends BaseEntity {
 
     @Id
