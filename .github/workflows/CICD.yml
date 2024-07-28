@@ -2,9 +2,9 @@ name: CICD
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: ["dev"]
   pull_request:
-    branches: [ "dev" ]
+    branches: ["dev"]
 
 permissions:
   contents: read
@@ -33,10 +33,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker
-        run: docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/taka_server .
+        run: docker build --platform linux/amd64 -t k9yuw/taka_server .
 
       - name: Push Docker
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/taka_server:latest
+        run: docker push k9yuw/taka_server:latest
 
   deploy:
     needs: build
@@ -65,7 +65,7 @@ jobs:
             exit 1
           fi
 
-      - name: Pull and run Docker container
+      - name: Pull and run Docker Compose
         uses: appleboy/ssh-action@master
         with:
           username: ubuntu
@@ -74,10 +74,9 @@ jobs:
           script_stop: true
           script: |
             sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/taka_server:latest
-            sudo docker stop ${{ env.TARGET_UPSTREAM }}
-            sudo docker rm ${{ env.TARGET_UPSTREAM }}
-            sudo docker run -d --name ${{ env.TARGET_UPSTREAM }} -p ${{ env.CURRENT_PORT }}:8080 ${{ secrets.DOCKERHUB_USERNAME }}/taka_server:latest
+            cd /path/to/your/docker-compose-directory
+            sudo docker-compose pull taka_server
+            sudo docker-compose up -d
 
       - name: Check deploy server URL
         uses: jtalk/url-health-check-action@v3
