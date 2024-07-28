@@ -4,7 +4,7 @@ services:
     image: mysql:latest
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: taka
     ports:
       - "3306:3306"
@@ -16,13 +16,13 @@ services:
     container_name: blue
     environment:
       PROFILES: blue
-      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
-      MYSQL_USERNAME: $MYSQL_USERNAME
-      MYSQL_PASSWORD: $MYSQL_PASSWORD
-      JWT_SECRET: $JWT_SECRET
-      MAIL_USERNAME: $MAIL_USERNAME
-      MAIL_PASSWORD: $MAIL_PASSWORD
-      TAKASERVER_IP: $TAKA_SERVER_IP
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USERNAME: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      TAKASERVER_IP: ${TAKA_SERVER_IP}
     ports:
       - "8080:8080"
     depends_on:
